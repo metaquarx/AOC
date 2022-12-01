@@ -19,18 +19,20 @@ int main(int argc, char ** argv) {
 		return 1;
 	}
 
-	std::vector<unsigned> elves{1, 0};
-	std::string line;
+	std::vector<unsigned> elves;
 	elves.reserve(1000);
 
+	unsigned counter{};
+	std::string line;
 	while (std::getline(file, line)) {
 		if (line.empty()) {
-		  	elves.emplace_back(0);
+		  	elves.emplace_back(counter);
+		  	counter = 0;
 		} else {
-		  	elves.back() += std::stoul(line);
+		  	counter += std::stoul(line);
 		}
 	}
-	elves.pop_back();
+	elves.push_back(counter);
 
 	std::sort(elves.begin(), elves.end());
 
