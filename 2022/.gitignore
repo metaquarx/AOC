@@ -1,0 +1,12 @@
+# Inputs
+
+inputs/
+
+# C++
+
+CPP/build
+CPP/.clangd
+
+# Rust
+
+Rust/target
