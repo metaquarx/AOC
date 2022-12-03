@@ -1,50 +1,54 @@
 // SPDX-FileCopyrightText: 2022 metaquarx <metaquarx@protonmail.com>
 // SPDX-License-Identifier: GPL-3.0-only
 
-#include <iostream>
-#include <fstream>
-#include <unordered_set>
-#include <set>
-#include <vector>
-#include <algorithm>
-#include <cassert>
+#include "Day03.hpp"
 
-int main(int argc, char ** argv) {
-	std::ifstream file(argv[1]);
+#include "Utils.hpp"
 
-	std::string line;
-	unsigned long total_p1{};
-	unsigned long total_p2{};
+static int value(char c) {
+	return c < 'a' ? c - 'A' + 27 : c - 'a' + 1; // flip A-Za-z ASCII into a-zA-Z
+}
 
-	auto value = [](char c){
-		return 1 + (c < 'a' ? c - 'A' + 26 : c - 'a');
-	};
-	auto compare = [&](char l, char r) { return value(l) < value(r); };
-	auto overlap = [&](auto b1, auto e1, auto b2, auto e2) {
-		std::set<char, decltype(compare)> a(b1, e1, compare);
-		std::set<char, decltype(compare)> b(b2, e2, compare);
+template <typename T1, typename T2>
+static std::vector<char> overlap(T1 lhs_b, T1 lhs_e, T2 rhs_b, T2 rhs_e) {
+	std::vector<char> out;
+	for (auto outer = lhs_b; outer != lhs_e; outer++) {
+		for (auto inner = rhs_b; inner != rhs_e; inner++) {
+			if (value(*outer) == value(*inner)) { // extract intersections
+				out.push_back(*outer);
+			}
+		}
+	}
+	return out;
+}
 
-		std::vector<char> output;
-		std::set_intersection(a.begin(), a.end(), b.begin(), b.end(), std::back_inserter(output), compare);
-		return output;
-	};
+Solution::Answer Day03::solve(std::string input) const {
+	int p1{};
+	int p2{};
 
-	std::vector<std::set<char, decltype(compare)>> group;
-	while (std::getline(file, line)) {
-		total_p1 += value(overlap(line.begin(), line.begin() + line.size() / 2,
-								  line.begin() + line.size() / 2, line.end()).front());
+	std::vector<std::string> prev;
+	for (auto & backpack : Utils::split(input, "\n")) {
+		p1 += value(overlap(backpack.begin(), backpack.begin() + backpack.size() / 2,
+							backpack.rbegin(), backpack.rend() - backpack.size() / 2).front());
 
-		group.emplace_back(line.begin(), line.end(), compare);
-		if (group.size() == 3) {
-			auto first = overlap(group[0].begin(), group[0].end(),
-								 group[1].begin(), group[1].end());
-			auto second = overlap(first.begin(), first.end(),
-								  group[2].begin(), group[2].end());
-			total_p2 += value(second.front());
-			group.clear();
+		prev.push_back(backpack);
+		if (prev.size() == 3) {
+			auto pair = overlap(prev[0].begin(), prev[0].end(), prev[1].begin(), prev[1].end());
+				 pair = overlap(prev[2].begin(), prev[2].end(), pair.begin(), pair.end());
+			p2 += value(pair.front());
+			prev.clear();
 		}
 	}
 
-	std::cout << "P1: " << total_p1 << std::endl;
-	std::cout << "P2: " << total_p2 << std::endl;
+	return {std::to_string(p1),
+			std::to_string(p2)};
+}
+
+std::vector<Solution::Test> Day03::get_tests() const {
+	return {
+		{
+			"vJrwpWtwJgWrhcsFMMfFFhFp\njqHRNqRjqzjGDLGLrsFMfFZSrLrFZsSL\nPmmdzqPrVvPwwTWBwg\nwMqvLMZHhHMvwLHjbvcjnnSBnvTQFn\nttgJtRGJQctTZtZT\nCrZsJsPPZsGzwwsLwLmpwMDw",
+			{"157", "70"}
+		}
+	};
 }

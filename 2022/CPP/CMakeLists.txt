@@ -4,7 +4,7 @@
 # Setup
 
 cmake_minimum_required(VERSION 3.20 FATAL_ERROR)
-project(Logiclably VERSION 0.1.0 LANGUAGES CXX)
+project(AOC VERSION 0.1.0 LANGUAGES CXX)
 
 # Build type
 
