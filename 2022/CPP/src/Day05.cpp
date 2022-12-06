@@ -29,7 +29,6 @@ static Ship parse_ship(const std::string & input) {
 	for (auto & stack : output) { // reverse, since current order is top-down
 		std::reverse(stack.begin(), stack.end());
 	}
-
 	return output;
 }
 
@@ -47,7 +46,8 @@ static Moves parse_moves(const std::string & input) {
 	output.reserve(moves.size());
 	for (auto move : moves) {
 		Move temp;
-		if (std::sscanf(move.c_str(), "move %zu from %zu to %zu", &temp.count, &temp.from, &temp.to) == 3) {
+		if (std::sscanf(move.c_str(), "move %zu from %zu to %zu",
+						&temp.count, &temp.from, &temp.to) == 3) {
 			output.push_back({temp.count, temp.from - 1, temp.to -1}); // -1 to get indices
 		}
 	}
@@ -57,43 +57,33 @@ static Moves parse_moves(const std::string & input) {
 
 Solution::Answer Day05::solve(std::string input) const {
 	auto parts = Utils::split(input, "\n\n");
-
-	auto ship = parse_ship(parts[0]);
 	auto moves = parse_moves(parts[1]);
 
-	std::string p1;
-	auto stacks = ship;
-	for (auto & move : moves) {
-		auto & from = stacks[move.from];
-		auto & to = stacks[move.to];
-
-		for (auto _ = move.count; _--; ) {
+	auto p1 = [&](auto & from, auto & to, std::size_t count) {
+		for (auto _ = count; _--; ) {
 			to.push_back(from.back());
 			from.pop_back();
 		}
-	}
-	for (auto & stack : stacks) {
-		if (stack.size())
-		p1 += stack.back();
-	}
+	};
+	auto p2 = [&](auto & from, auto & to, std::size_t count) {
+		auto start = from.end() - static_cast<long>(count);
+		to.insert(to.end(), start, from.end());
+		from.erase(start, from.end());
+	};
 
-	std::string p2{};
-	stacks = ship;
-	for (auto & move : moves) {
-		auto & from = stacks[move.from];
-		auto & to = stacks[move.to];
-
-		to.insert(to.end(), from.end() - static_cast<long>(move.count), from.end());
-		from.erase(from.end() - static_cast<long>(move.count), from.end());
-	}
-	for (auto & stack : stacks) {
-		if (stack.size()) {
-			p2 += stack.back();
+	auto execute = [&](Ship ship, auto & alg) {
+		for (auto & move : moves) {
+			alg(ship[move.from], ship[move.to], move.count);
 		}
-	}
+		std::string out;
+		for (auto & stack : ship) {
+			if (stack.size()) out += stack.back();
+		}
+		return out;
+	};
 
-	return {p1,
-			p2};
+	auto ship = parse_ship(parts[0]);
+	return {execute(ship, p1), execute(ship, p2)};
 }
 
 std::vector<Solution::Test> Day05::get_tests() const {
