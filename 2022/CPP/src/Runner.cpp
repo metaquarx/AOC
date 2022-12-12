@@ -11,6 +11,8 @@
 #include "Day07.hpp"
 #include "Day08.hpp"
 #include "Day09.hpp"
+#include "Day10.hpp"
+#include "Day11.hpp"
 
 #include <iostream>
 #include <stdexcept>
@@ -18,7 +20,7 @@
 #include <fstream>
 #include <cpr/cpr.h>
 
-constexpr unsigned final_solution = 9;
+constexpr unsigned final_solution = 11;
 
 int main(int argc, char * argv[]) {
 	using namespace std::chrono_literals;
@@ -100,15 +102,17 @@ int main(int argc, char * argv[]) {
 	// run solution
 	std::unique_ptr<Solution> sol;
 	switch (day_n) {
-		case 1: sol = std::make_unique<Day01>(); break;
-		case 2: sol = std::make_unique<Day02>(); break;
-		case 3: sol = std::make_unique<Day03>(); break;
-		case 4: sol = std::make_unique<Day04>(); break;
-		case 5: sol = std::make_unique<Day05>(); break;
-		case 6: sol = std::make_unique<Day06>(); break;
-		case 7: sol = std::make_unique<Day07>(); break;
-		case 8: sol = std::make_unique<Day08>(); break;
-		case 9: sol = std::make_unique<Day09>(); break;
+		case  1: sol = std::make_unique<Day01>(); break;
+		case  2: sol = std::make_unique<Day02>(); break;
+		case  3: sol = std::make_unique<Day03>(); break;
+		case  4: sol = std::make_unique<Day04>(); break;
+		case  5: sol = std::make_unique<Day05>(); break;
+		case  6: sol = std::make_unique<Day06>(); break;
+		case  7: sol = std::make_unique<Day07>(); break;
+		case  8: sol = std::make_unique<Day08>(); break;
+		case  9: sol = std::make_unique<Day09>(); break;
+		case 10: sol = std::make_unique<Day10>(); break;
+		case 11: sol = std::make_unique<Day11>(); break;
 		default: throw std::runtime_error("unreachable");
 	}
 
