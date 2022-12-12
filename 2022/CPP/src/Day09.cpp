@@ -98,5 +98,3 @@ std::vector<Solution::Test> Day09::get_tests() const {
 		}
 	};
 }
-
-// 2863 low
