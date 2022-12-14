@@ -14,6 +14,7 @@
 #include "Day10.hpp"
 #include "Day11.hpp"
 #include "Day12.hpp"
+#include "Day13.hpp"
 
 #include <iostream>
 #include <stdexcept>
@@ -21,7 +22,7 @@
 #include <fstream>
 #include <cpr/cpr.h>
 
-constexpr unsigned final_solution = 12;
+constexpr unsigned final_solution = 13;
 
 int main(int argc, char * argv[]) {
 	using namespace std::chrono_literals;
@@ -115,6 +116,7 @@ int main(int argc, char * argv[]) {
 		case 10: sol = std::make_unique<Day10>(); break;
 		case 11: sol = std::make_unique<Day11>(); break;
 		case 12: sol = std::make_unique<Day12>(); break;
+		case 13: sol = std::make_unique<Day13>(); break;
 		default: throw std::runtime_error("unreachable");
 	}
 
