@@ -61,22 +61,23 @@ std::optional<unsigned long> check(int max_pos, const Sensors & sensors, Coord c
 	return static_cast<unsigned long>(c.x) * 4'000'000ul + static_cast<unsigned>(c.y);
 }
 
-std::optional<unsigned long> operator||(const std::optional<unsigned long> left,
-										const std::optional<unsigned long> right) {
+std::optional<unsigned long> operator||(
+	const std::optional<unsigned long> left,
+	const std::optional<unsigned long> right) {
 	return left ? left : (right ? right : std::nullopt);
 }
 
 unsigned long find_empty(int max_pos, const Sensors & sensors) {
-    for (unsigned i = 0; i < sensors.size(); i++) {
-        for (unsigned j = i + 1; j < sensors.size(); j++) {
-            auto & [a, ba] = *std::next(sensors.begin(), i);
-            auto & [b, bb] = *std::next(sensors.begin(), j);
+	for (unsigned i = 0; i < sensors.size(); i++) {
+		for (unsigned j = i + 1; j < sensors.size(); j++) {
+			auto & [a, ba] = *std::next(sensors.begin(), i);
+			auto & [b, bb] = *std::next(sensors.begin(), j);
 
-            auto da = a.manhattan(ba);
-            auto db = b.manhattan(bb);
+			auto da = a.manhattan(ba);
+			auto db = b.manhattan(bb);
 
-            if (a.manhattan(b) - 1 > da + db)
-                continue;
+			if (a.manhattan(b) - 1 > da + db)
+				continue;
 
 			if (auto result =
 				check(max_pos, sensors,
@@ -97,10 +98,10 @@ unsigned long find_empty(int max_pos, const Sensors & sensors) {
 					intersection(-1,  (a.x - da) + a.y,  1, -(b.x - db) + b.y, -1,  0))) {
 				return *result;
 			}
-        }
-    }
+		}
+	}
 
-    return 0;
+	return 0;
 }
 
 }
