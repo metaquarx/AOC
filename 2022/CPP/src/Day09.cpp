@@ -11,48 +11,24 @@
 
 namespace {
 
-struct Coord {
-	int x, y;
-	Coord(int x_ = 0, int y_ = 0) : x(x_), y(y_) {}
+using Utils::Coord;
 
-	bool operator==(const Coord & o) const {
-		return x == o.x && y == o.y;
-	}
+bool over(const Coord & c) {
+	return std::abs(c.x) >= 2 || std::abs(c.y) >= 2;
+}
 
-	Coord & operator+=(const Coord & o) {
-		x += o.x;
-		y += o.y;
-		return *this;
-	}
+Coord norm(const Coord & c) {
+	return { (c.x > 0) - (c.x < 0), (c.y > 0) - (c.y < 0) };
+}
 
-	Coord operator-(const Coord & o) const {
-		return {x - o.x, y - o.y};
-	}
-
-	bool over() const {
-		return std::abs(x) >= 2 || std::abs(y) >= 2;
-	}
-
-	Coord norm() const {
-		return { (x > 0) - (x < 0), (y > 0) - (y < 0) };
-	}
-
-	struct Hash {
-		std::size_t operator()(const Coord & c) const {
-			auto xh = std::hash<int>()(c.x);
-			return std::hash<int>()(c.y) + 0x9e3779b9 + (xh << 6) + (xh >> 2);
-		}
+std::unordered_map<char, Coord> dirs() {
+	return {
+		{'R', { 1,  0}},
+		{'L', {-1,  0}},
+		{'U', { 0,  1}},
+		{'D', { 0, -1}}
 	};
-
-	static std::unordered_map<char, Coord> dirs() {
-		return {
-			{'R', { 1,  0}},
-			{'L', {-1,  0}},
-			{'U', { 0,  1}},
-			{'D', { 0, -1}}
-		};
-	}
-};
+}
 
 }
 
@@ -60,12 +36,12 @@ Solution::Answer Day09::solve(std::string input) const {
 	std::unordered_set<Coord, Coord::Hash> p1;
 	Coord head{}, tail{};
 	for (auto & move : Utils::split(input, "\n")) {
-		auto dz = Coord::dirs()[move[0]];
+		auto dz = dirs()[move[0]];
 		for (auto i = 0u; i < std::stoul(Utils::split(move, " ")[1]); i++) {
 			head += dz;
 			auto delta = head - tail;
-			if (delta.over()) {
-				tail += delta.norm();
+			if (over(delta)) {
+				tail += norm(delta);
 			}
 			p1.emplace(tail);
 		}
@@ -74,13 +50,13 @@ Solution::Answer Day09::solve(std::string input) const {
 	std::unordered_set<Coord, Coord::Hash> p2;
 	std::array<Coord, 10> parts;
 	for (auto & move : Utils::split(input, "\n")) {
-		auto dz = Coord::dirs()[move[0]];
+		auto dz = dirs()[move[0]];
 		for (auto i = 0u; i < std::stoul(Utils::split(move, " ")[1]); i++) {
 			parts[0] += dz;
 			for (std::size_t j = 1; j < 10; j++) {
 				auto delta = parts[j - 1] - parts[j];
-				if (delta.over()) {
-					parts[j] += delta.norm();
+				if (over(delta)) {
+					parts[j] += norm(delta);
 				}
 			}
 			p2.emplace(parts.back());

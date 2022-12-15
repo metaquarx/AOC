@@ -12,26 +12,7 @@
 
 namespace {
 
-struct Coord {
-	int x, y;
-	Coord(int x_ = 0, int y_ = 0) : x(x_), y(y_) {}
-
-	int manhattan(Coord other) const {
-		return std::abs(x - other.x) + std::abs(y - other.y);
-	}
-
-	bool operator==(Coord other) const {
-		return x == other.x && y == other.y;
-	}
-
-	struct Hash {
-		std::size_t operator()(const Coord & c) const {
-			auto xh = std::hash<int>()(c.x);
-			return std::hash<int>()(c.y) + 0x9e3779b9 + (xh << 6) + (xh >> 2);
-		}
-	};
-};
-
+using Utils::Coord;
 using Sensors = std::unordered_map<Coord, Coord, Coord::Hash>;
 
 int count_full(int row, const Sensors & sensors) {

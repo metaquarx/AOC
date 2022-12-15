@@ -11,34 +11,18 @@
 
 namespace {
 
-struct Coord {
-	int x, y;
+using Utils::Coord;
 
-	Coord(const std::string & i) {
-		auto c = std::sscanf(i.c_str(), "%i, %i", &x, &y);
-		assert(c == 2);
-	}
+Coord parse_coord(const std::string & i) {
+	Coord out;
+	auto c = std::sscanf(i.c_str(), "%i, %i", &out.x, &out.y);
+	assert(c == 2);
+	return out;
+}
 
-	Coord(int x_, int y_) : x(x_), y(y_) {}
-
-	Coord operator+(const Coord & o) const {
-		return {x + o.x, y + o.y};
-	}
-
-	Coord operator-(const Coord & o) const {
-		return {x - o.x, y - o.y};
-	}
-
-	Coord & normalise() {
-		x = std::clamp(x, -1, 1);
-		y = std::clamp(y, -1, 1);
-		return *this;
-	}
-
-	bool operator!=(const Coord & o) const {
-		return !(x == o.x && y == o.y);
-	}
-};
+Coord normalise(const Coord & c) {
+	return {std::clamp(c.x, -1, 1), std::clamp(c.y, -1, 1)};
+}
 
 struct Cave {
 	enum class Tile {Empty, Rock, Sand};
@@ -46,10 +30,8 @@ struct Cave {
 	int highest_y;
 	Cave() : tiles{{{Tile::Empty}}}, highest_y{} {}
 
-
 	void add_line(Coord start, Coord end) {
-		Coord dir(end - start);
-		dir.normalise();
+		auto dir = normalise((end - start));
 		for (auto p = start; p != end + dir; p = p + dir) {
 			tiles[p.y][p.x - 300] = Tile::Rock;
 			highest_y = std::max(highest_y, p.y);
@@ -93,7 +75,7 @@ Solution::Answer Day14::solve(std::string input) const {
 	for (auto & path : Utils::split(input, "\n")) {
 		auto lines = Utils::split(path, " -> ");
 		for (std::size_t i = 0; i < lines.size() - 1; i++) {
-			c.add_line({lines[i]}, {lines[i + 1]});
+			c.add_line(parse_coord(lines[i]), parse_coord(lines[i + 1]));
 		}
 	}
 
@@ -102,7 +84,6 @@ Solution::Answer Day14::solve(std::string input) const {
 
 	c.run(true);
 	unsigned p2 = c.get_rested_sand();
-
 
 	return {std::to_string(p1), std::to_string(p2)};
 }

@@ -9,33 +9,7 @@
 #include <unordered_map>
 #include <optional>
 
-namespace {
-
-struct Coord {
-	int x, y;
-	Coord(int x_ = 0, int y_ = 0) : x(x_), y(y_) {}
-
-	bool operator==(const Coord & o) const {
-		return x == o.x && y == o.y;
-	}
-
-	bool operator!=(const Coord & o) const {
-		return !(*this == o);
-	}
-
-	Coord operator+(const Coord & o) const {
-		return {x + o.x, y + o.y};
-	}
-
-	struct Hash {
-		std::size_t operator()(const Coord & c) const {
-			auto xh = std::hash<int>()(c.x);
-			return std::hash<int>()(c.y) + 0x9e3779b9 + (xh << 6) + (xh >> 2);
-		}
-	};
-};
-
-}
+using Utils::Coord;
 
 Solution::Answer Day12::solve(std::string input) const {
 	std::vector<std::vector<int>> height_map;

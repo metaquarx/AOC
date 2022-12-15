@@ -24,4 +24,36 @@ std::vector<std::string> split(const std::string & input, const std::string & de
 	return out;
 }
 
+Coord::Coord(int x_, int y_) : x(x_), y(y_) {}
+
+int Coord::manhattan(const Coord & to) const {
+	return std::abs(x - to.x) + std::abs(y - to.y);
+}
+
+Coord Coord::operator+(const Coord & o) const {
+	return {x + o.x, y + o.y};
+}
+
+Coord & Coord::operator+=(const Coord &other) {
+	*this = *this + other;
+	return *this;
+}
+
+Coord Coord::operator-(const Coord & o) const {
+	return {x - o.x, y - o.y};
+}
+
+bool Coord::operator==(const Coord & other) const {
+	return x == other.x && y == other.y;
+}
+
+bool Coord::operator!=(const Coord & other) const {
+	return !(*this == other);
+}
+
+std::size_t Coord::Hash::operator()(const Coord & c) const {
+	auto xh = std::hash<int>()(c.x);
+	return std::hash<int>()(c.y) + 0x9e3779b9 + (xh << 6) + (xh >> 2);
+}
+
 }
