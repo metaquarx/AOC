@@ -7,6 +7,8 @@
 #include <algorithm>
 #include <variant>
 
+namespace {
+
 struct Packet {
 	using PT = std::variant<int, std::vector<Packet>>;
 	PT value;
@@ -69,6 +71,8 @@ struct Packet {
 		return value == o.value;
 	}
 };
+
+}
 
 Solution::Answer Day13::solve(std::string input) const {
 	auto in = Utils::split(input, "\n\n");

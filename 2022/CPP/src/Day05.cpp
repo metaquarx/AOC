@@ -6,11 +6,13 @@
 #include "Utils.hpp"
 #include <algorithm>
 
+namespace {
+
 using Crate = char;
 using Stack = std::vector<Crate>;
 using Ship = std::vector<Stack>;
 
-static Ship parse_ship(const std::string & input) {
+Ship parse_ship(const std::string & input) {
 	Ship output;
 	output.resize(20);
 
@@ -39,7 +41,7 @@ struct Move {
 };
 using Moves = std::vector<Move>;
 
-static Moves parse_moves(const std::string & input) {
+Moves parse_moves(const std::string & input) {
 	Moves output;
 
 	auto moves = Utils::split(input, "\n");
@@ -53,6 +55,8 @@ static Moves parse_moves(const std::string & input) {
 	}
 
 	return output;
+}
+
 }
 
 Solution::Answer Day05::solve(std::string input) const {

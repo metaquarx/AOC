@@ -5,7 +5,11 @@
 
 #include "Utils.hpp"
 
+namespace {
+
 using ipair = std::pair<int, int>;
+
+}
 
 Solution::Answer Day08::solve(std::string input) const {
 	auto grid = Utils::split(input, "\n");

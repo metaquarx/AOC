@@ -10,12 +10,16 @@
 #include <numeric>
 #include <stdexcept>
 
+namespace {
+
 struct Monkey {
 	std::vector<unsigned long> worry_levels;
 	std::function<unsigned long(unsigned long)> inspect;
 	unsigned long divisor;
 	std::pair<std::size_t, std::size_t> next; // true, false
 };
+
+}
 
 Solution::Answer Day11::solve(std::string input) const {
 	std::vector<Monkey> monkeys;

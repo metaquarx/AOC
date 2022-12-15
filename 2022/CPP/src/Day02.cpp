@@ -7,6 +7,8 @@
 #include <algorithm>
 #include <numeric>
 
+namespace {
+
 enum State : int {
 	Rock     = 0,
 	Paper    = 1,
@@ -16,7 +18,7 @@ enum State : int {
 	Win      = 2
 };
 
-static State status(State lhs, State rhs) {
+State status(State lhs, State rhs) {
 	switch (rhs - lhs) {
 		case -2: [[fallthrough]];
 		case  1: return State::Win;
@@ -25,8 +27,10 @@ static State status(State lhs, State rhs) {
 	}
 }
 
-static int score(State state, State outcome) {
+int score(State state, State outcome) {
 	return 1 + state + outcome * 3;
+}
+
 }
 
 Solution::Answer Day02::solve(std::string input) const {

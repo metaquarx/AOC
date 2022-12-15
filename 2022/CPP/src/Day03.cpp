@@ -5,12 +5,14 @@
 
 #include "Utils.hpp"
 
-static int value(char c) {
+namespace {
+
+int value(char c) {
 	return c < 'a' ? c - 'A' + 27 : c - 'a' + 1; // flip A-Za-z ASCII into a-zA-Z
 }
 
 template <typename T1, typename T2>
-static std::vector<char> overlap(T1 lhs_b, T1 lhs_e, T2 rhs_b, T2 rhs_e) {
+std::vector<char> overlap(T1 lhs_b, T1 lhs_e, T2 rhs_b, T2 rhs_e) {
 	std::vector<char> out;
 	for (auto outer = lhs_b; outer != lhs_e; outer++) {
 		for (auto inner = rhs_b; inner != rhs_e; inner++) {
@@ -20,6 +22,8 @@ static std::vector<char> overlap(T1 lhs_b, T1 lhs_e, T2 rhs_b, T2 rhs_e) {
 		}
 	}
 	return out;
+}
+
 }
 
 Solution::Answer Day03::solve(std::string input) const {

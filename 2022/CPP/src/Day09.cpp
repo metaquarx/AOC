@@ -9,6 +9,8 @@
 #include <array>
 #include <cmath>
 
+namespace {
+
 struct Coord {
 	int x, y;
 	Coord(int x_ = 0, int y_ = 0) : x(x_), y(y_) {}
@@ -51,6 +53,8 @@ struct Coord {
 		};
 	}
 };
+
+}
 
 Solution::Answer Day09::solve(std::string input) const {
 	std::unordered_set<Coord, Coord::Hash> p1;

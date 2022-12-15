@@ -9,6 +9,8 @@
 #include <numeric>
 #include <stdexcept>
 
+namespace {
+
 struct File {
 	std::string name;
 	std::size_t size;
@@ -45,6 +47,8 @@ struct Directory {
 		return total;
 	}
 };
+
+}
 
 Solution::Answer Day07::solve(std::string input) const {
 	Directory top_level;

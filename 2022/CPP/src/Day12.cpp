@@ -9,6 +9,8 @@
 #include <unordered_map>
 #include <optional>
 
+namespace {
+
 struct Coord {
 	int x, y;
 	Coord(int x_ = 0, int y_ = 0) : x(x_), y(y_) {}
@@ -32,6 +34,8 @@ struct Coord {
 		}
 	};
 };
+
+}
 
 Solution::Answer Day12::solve(std::string input) const {
 	std::vector<std::vector<int>> height_map;
