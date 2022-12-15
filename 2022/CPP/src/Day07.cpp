@@ -5,7 +5,6 @@
 
 #include "Utils.hpp"
 #include <algorithm>
-#include <cassert>
 #include <numeric>
 #include <stdexcept>
 

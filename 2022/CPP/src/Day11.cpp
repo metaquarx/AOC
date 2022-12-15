@@ -28,7 +28,8 @@ Solution::Answer Day11::solve(std::string input) const {
 		auto lines = Utils::split(monkey, "\n");
 
 		std::size_t monkey_n;
-		assert(std::sscanf(lines[0].c_str(), "Monkey %zu", &monkey_n) == 1);
+		auto c = std::sscanf(lines[0].c_str(), "Monkey %zu", &monkey_n);
+		assert(c == 1);
 		assert(monkey_n == monkeys.size());
 
 		auto items = Utils::split(lines[1], " ");

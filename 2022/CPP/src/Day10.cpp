@@ -4,7 +4,6 @@
 #include "Day10.hpp"
 
 #include "Utils.hpp"
-#include <cassert>
 #include <regex>
 #include <stdexcept>
 #include <unordered_set>

@@ -15,7 +15,8 @@ struct Coord {
 	int x, y;
 
 	Coord(const std::string & i) {
-		assert(std::sscanf(i.c_str(), "%i, %i", &x, &y) == 2);
+		auto c = std::sscanf(i.c_str(), "%i, %i", &x, &y);
+		assert(c == 2);
 	}
 
 	Coord(int x_, int y_) : x(x_), y(y_) {}
