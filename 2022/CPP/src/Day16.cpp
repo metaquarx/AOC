@@ -6,7 +6,6 @@
 #include "Utils.hpp"
 #include <map>
 #include <optional>
-#include <unordered_map>
 #include <algorithm>
 
 namespace {
@@ -39,10 +38,12 @@ struct Valve {
 
 struct Volcanium {
 	using VT = std::vector<ValveID>;
-	std::unordered_map<ValveID, Valve, ValveID::Hash> valves;
-	std::unordered_map<ValveID, std::unordered_map<ValveID, int, ValveID::Hash>, ValveID::Hash> distances;
+
+	std::map<ValveID, Valve> valves;
+	std::map<ValveID, std::map<ValveID, int>> distances;
 	std::vector<ValveID> nz;
-	std::map<VT, std::unordered_map<ValveID, int, ValveID::Hash>> cache;
+	std::map<VT, std::map<ValveID, int>> cache;
+
 
 	Volcanium(const std::vector<std::string> & inputs) {
 		for (auto & valve : inputs) {
@@ -64,8 +65,8 @@ struct Volcanium {
 	}
 	const ValveID AA{'A', 'A'};
 
-	std::unordered_map<ValveID, int, ValveID::Hash> construct_paths(ValveID start) {
-		std::unordered_map<ValveID, int, ValveID::Hash> dists;
+	std::map<ValveID, int> construct_paths(ValveID start) {
+		std::map<ValveID, int> dists;
 		std::vector<ValveID> queue; queue.push_back(start);
 
 		while (queue.size()) {
@@ -158,7 +159,7 @@ struct Volcanium {
 		return explore(AA, {AA}, 0, 30, 30);
 	}
 
-	std::optional<VT> best_pair_for(const VT & path, std::map<VT, int> optimal_path_values) {
+	std::optional<VT> best_pair_for(const VT & path, const std::map<VT, int> & optimal_path_values) {
 		std::map<VT, int> options;
 		for (auto & [k, v] : optimal_path_values) {
 			if (!std::count_if(k.begin(), k.end(), [&](const auto & e) {
