@@ -18,6 +18,8 @@
 #include "Day14.hpp"
 #include "Day15.hpp"
 #include "Day16.hpp"
+#include "Day17.hpp"
+#include "Day18.hpp"
 
 #include <iostream>
 #include <stdexcept>
@@ -25,9 +27,10 @@
 #include <fstream>
 #include <cpr/cpr.h>
 
-constexpr unsigned final_solution = 16;
+constexpr unsigned final_solution = 18;
 
 int main(int argc, char * argv[]) {
+	std::ios::sync_with_stdio(false);
 	using namespace std::chrono_literals;
 	namespace fs = std::filesystem;
 
@@ -123,6 +126,8 @@ int main(int argc, char * argv[]) {
 		case 14: sol = std::make_unique<Day14>(); break;
 		case 15: sol = std::make_unique<Day15>(); break;
 		case 16: sol = std::make_unique<Day16>(); break;
+		case 17: sol = std::make_unique<Day17>(); break;
+		case 18: sol = std::make_unique<Day18>(); break;
 		default: throw std::runtime_error("unreachable");
 	}
 
